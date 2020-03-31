@@ -60,36 +60,12 @@ my $inst_dir     = "$ENV{HOME}/Athena";
 my $build_cores  = calculate_cores();
 my $desktop      = get_desktop();
 
-my $DISTRO = detect_distro();
+my $DISTRO = "ubuntu18.04";
 my %PACKAGES = get_package_list();
 install_missing_packages();
 collect_info();
 install();
 setup_desktop();
-
-
-
-
-sub detect_distro {
-	info "Detecting distribution... ";
-
-	my %os=();
-
-	unless ( open(OS,"cat /etc/os-release|") ){
-		die "Failed to detect distribution!";
-	}
-
-	while (<OS>){
-		my @os_param = split /=/, $_;
-		@os_param[1] =~ tr/"//d;
-		@os_param[1] =~ tr/\n//d;
-		$os{$os_param[0]} = $os_param[1];
-	}
-
-	return $os{ID}.$os{VERSION_ID};
-}
-
-
 
 sub get_package_list {
 	info "Getting the package list... ";
